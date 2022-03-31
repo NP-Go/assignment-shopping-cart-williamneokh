@@ -12,7 +12,14 @@ type itemInformation struct {
 
 func main() {
 	nameMap := make(map[string]itemInformation)
-	var category []string
+	nameMap["Fork"] = itemInformation{0, 4, 3}
+	nameMap["Plates"] = itemInformation{0, 4, 3}
+	nameMap["Cups"] = itemInformation{0, 5, 3}
+	nameMap["Bread"] = itemInformation{1, 2, 2}
+	nameMap["Cake"] = itemInformation{1, 3, 1}
+	nameMap["Coke"] = itemInformation{2, 5, 2}
+	nameMap["Sprite"] = itemInformation{2, 5, 2}
+	category := []string{"Household", "Food", "Drink"}
 	for {
 		var choice int
 		fmt.Println("Shopping List Application")
@@ -29,9 +36,14 @@ func main() {
 
 		switch choice {
 		case 1:
-			//viewEntireShoppingList()
+			fmt.Println("Shopping List Contents:")
+			for key, element := range nameMap {
+				fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", category[element.catType], key, element.quantity, element.cost)
+			}
+			pressToContinue()
 		case 2:
 			//generateReport()
+			pressToContinue()
 		case 3:
 			//addItem()
 			var itemName string
@@ -59,13 +71,17 @@ func main() {
 			for key, element := range nameMap {
 				fmt.Println(key, element)
 			}
+			pressToContinue()
 		case 4:
 			//modifyItem()
+			pressToContinue()
 		case 5:
 			//deleteItem()
+			pressToContinue()
 		case 6:
 			for key, element := range nameMap {
 				fmt.Println(key, element)
+				pressToContinue()
 			}
 		case 7:
 			var userInput string
@@ -76,15 +92,22 @@ func main() {
 			if userInput == "" {
 				fmt.Println("No Input Found!")
 
-			} else {
+			}
+			for _, element := range nameMap {
+				if userInput == category[element.catType] {
+					fmt.Printf("Category: %v already exit at index %v !\n", userInput, element.catType)
+					pressToContinue()
+				} else {
+					//category = append(category, userInput)
+					//for i, cat := range category {
+					//	if userInput == cat {
+					//		fmt.Printf("New category: %v added at index %v\n", cat, i)
+					//		pressToContinue()
+					//	}
 
-				category = append(category, userInput)
-				for i, cat := range category {
-					if userInput == cat {
-						fmt.Printf("New category: %v added at index %v\n", cat, i)
-					}
-
+					//}
 				}
+
 			}
 
 		default:
@@ -95,4 +118,8 @@ func main() {
 }
 func printBreak() {
 	fmt.Println("=========================")
+}
+func pressToContinue() {
+	fmt.Println("\nPress any key to continue....")
+	_, _ = fmt.Scanln()
 }
