@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 )
 
 type itemInformation struct {
@@ -46,13 +48,15 @@ func main() {
 			pressToContinue()
 		case 3:
 			//addItem()
+			consoleReader := bufio.NewReader(os.Stdin)
 			var itemName string
 			var catName string
 			var quantityNum int
 			var itemCost int
+			var matchAny = false
 
 			fmt.Println("What is the name of your item?")
-			_, _ = fmt.Scanln(&itemName)
+			itemName, _ = consoleReader.ReadString('\n')
 			fmt.Println("What category does it belong to?")
 			_, _ = fmt.Scanln(&catName)
 			fmt.Println("How many units are there?")
@@ -63,15 +67,16 @@ func main() {
 			for i, cat := range category {
 				if catName == cat {
 					nameMap[itemName] = itemInformation{i, quantityNum, itemCost}
-				} else {
-					fmt.Println("Please first register the Category, before adding new item.")
+					matchAny = true
 				}
+
+			}
+			if matchAny == false {
+				fmt.Println("Please register new category before adding new item.")
 			}
 
-			for key, element := range nameMap {
-				fmt.Println(key, element)
-			}
 			pressToContinue()
+
 		case 4:
 			//modifyItem()
 			pressToContinue()
@@ -81,10 +86,12 @@ func main() {
 		case 6:
 			for key, element := range nameMap {
 				fmt.Println(key, element)
-				pressToContinue()
 			}
+			pressToContinue()
 		case 7:
+			var matchAny = false
 			var userInput string
+			var indexPlace int
 			fmt.Println("Add New Category Name")
 			fmt.Println("What is the New Category Name to add?")
 			_, _ = fmt.Scanln(&userInput)
@@ -95,23 +102,19 @@ func main() {
 			}
 			for _, element := range nameMap {
 				if userInput == category[element.catType] {
-					fmt.Printf("Category: %v already exit at index %v !\n", userInput, element.catType)
-					pressToContinue()
-				} else {
-					//category = append(category, userInput)
-					//for i, cat := range category {
-					//	if userInput == cat {
-					//		fmt.Printf("New category: %v added at index %v\n", cat, i)
-					//		pressToContinue()
-					//	}
-
-					//}
+					matchAny = true
+					indexPlace = element.catType
 				}
-
 			}
+			if matchAny == true {
+				fmt.Printf("Category: %v already exit at index %v !\n", userInput, indexPlace)
+				pressToContinue()
+			} else {
 
-		default:
-			//MainMenu()
+				category = append(category, userInput)
+				fmt.Printf("New category: %v added at index %v\n", userInput, len(category)-1)
+				pressToContinue()
+			}
 
 		}
 	}
