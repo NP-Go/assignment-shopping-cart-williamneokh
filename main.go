@@ -123,7 +123,46 @@ func main() {
 			pressToContinue()
 
 		case 4:
-			//modifyItem()
+			//modifyItem
+			var userInput string
+			var newName string
+			var newCategory string
+			var newQuantity int
+			var newCost float64
+			fmt.Println("Modify Item")
+			fmt.Println("Which item would you wish to modify?")
+			_, _ = fmt.Scanln(&userInput)
+			// search map base on userInput as key
+
+			for key, element := range nameMap {
+				if userInput == key {
+					fmt.Printf("Current item name is %v - Category is %v - Quantity is %v - Unit Cost %v\n", key, category[element.catType], element.quantity, element.cost)
+					fmt.Println("Enter new name. Enter for no change")
+					_, _ = fmt.Scanln(&newName)
+					fmt.Println("Enter new Category. Enter for no change")
+					_, _ = fmt.Scanln(&newCategory)
+					fmt.Println("Enter new Quantity. Enter for no change")
+					_, _ = fmt.Scanln(&newQuantity)
+					fmt.Println("Enter new Unit cost. Enter for no change")
+					_, _ = fmt.Scanln(&newCost)
+				}
+			}
+			if newName == "" {
+				fmt.Println("No change to item name made")
+			} else {
+			}
+			if newCategory == "" {
+				fmt.Println("No change to category made")
+			} else {
+			}
+			if newQuantity == 0 {
+				fmt.Println("No change to quantity made")
+			} else {
+			}
+			if newCost == 0.0 {
+				fmt.Println("No change to unit cost made")
+			} else {
+			}
 			pressToContinue()
 		case 5:
 			//deleteItem()
