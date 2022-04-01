@@ -37,6 +37,7 @@ func main() {
 		switch choice {
 		case 1:
 			fmt.Println("Shopping List Contents:")
+			printBreak()
 			for key, element := range nameMap {
 				fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", category[element.catType], key, element.quantity, element.cost)
 
@@ -44,6 +45,7 @@ func main() {
 			pressToContinue()
 		case 2:
 			fmt.Println("Generate Report")
+			printBreak()
 			fmt.Println("1. Total cost of each category")
 			fmt.Println("2. List of item by category")
 			fmt.Println("3. Main Menu")
@@ -57,6 +59,8 @@ func main() {
 				// find total cost of each category
 				var totalSum float64
 				totalSumMap := make(map[string]float64)
+				fmt.Println("Total cost by category")
+				printBreak()
 				for i, catName := range category {
 					for _, element := range nameMap {
 						if i == element.catType {
@@ -76,7 +80,8 @@ func main() {
 			case 2:
 				// list by category
 				//var totalCost float64
-
+				fmt.Println("List by category")
+				printBreak()
 				for i, cat := range category {
 					for key, element := range nameMap {
 						if i == element.catType {
@@ -134,6 +139,7 @@ func main() {
 			var isChangeQuantity = false
 			var catNum int
 			fmt.Println("Modify Item")
+			printBreak()
 			fmt.Println("Which item would you wish to modify?")
 			_, _ = fmt.Scanln(&userInput)
 			// search map base on userInput as key
@@ -222,6 +228,7 @@ func main() {
 			var isFound = false
 			//deleteItem
 			fmt.Println("Delete Item")
+			printBreak()
 			fmt.Println("Enter item name to delete:")
 			_, _ = fmt.Scanln(&userInput)
 
@@ -238,6 +245,8 @@ func main() {
 			}
 			pressToContinue()
 		case 6:
+			fmt.Println("Print Current Data")
+			printBreak()
 			for key, element := range nameMap {
 				fmt.Println(key, element)
 			}
@@ -247,6 +256,7 @@ func main() {
 			var userInput string
 			var indexPlace int
 			fmt.Println("Add New Category Name")
+			printBreak()
 			fmt.Println("What is the New Category Name to add?")
 			_, _ = fmt.Scanln(&userInput)
 
