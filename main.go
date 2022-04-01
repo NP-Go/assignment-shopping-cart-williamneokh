@@ -1,15 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 )
 
 type itemInformation struct {
 	catType  int
 	quantity int
-	cost     int
+	cost     float64
 }
 
 func main() {
@@ -41,22 +39,69 @@ func main() {
 			fmt.Println("Shopping List Contents:")
 			for key, element := range nameMap {
 				fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", category[element.catType], key, element.quantity, element.cost)
+
 			}
 			pressToContinue()
 		case 2:
-			//generateReport()
-			pressToContinue()
+			fmt.Println("Generate Report")
+			fmt.Println("1. Total cost of each category")
+			fmt.Println("2. List of item by category")
+			fmt.Println("3. Main Menu")
+			fmt.Println()
+			fmt.Println("Choose your Report:")
+
+			_, _ = fmt.Scanln(&choice)
+
+			switch choice {
+			case 1:
+				// find total cost of each category
+				var totalSum float64
+				totalSumMap := make(map[string]float64)
+				for i, catName := range category {
+					for _, element := range nameMap {
+						if i == element.catType {
+							sum := float64(element.quantity) * element.cost
+							totalSum = totalSum + sum
+
+							totalSumMap[catName] = totalSum
+
+							//fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", cat, key, element.quantity, element.cost)
+						}
+					}
+				}
+				for key, total := range totalSumMap {
+					fmt.Printf("%v cost: %v\n", key, total)
+				}
+				pressToContinue()
+			case 2:
+				// list by category
+				//var totalCost float64
+
+				for i, cat := range category {
+					for key, element := range nameMap {
+						if i == element.catType {
+
+							fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", cat, key, element.quantity, element.cost)
+						}
+
+					}
+				}
+				pressToContinue()
+			case 3:
+				continue
+			}
+
 		case 3:
 			//addItem()
-			consoleReader := bufio.NewReader(os.Stdin)
+
 			var itemName string
 			var catName string
 			var quantityNum int
-			var itemCost int
+			var itemCost float64
 			var matchAny = false
 
 			fmt.Println("What is the name of your item?")
-			itemName, _ = consoleReader.ReadString('\n')
+			_, _ = fmt.Scanln(&itemName)
 			fmt.Println("What category does it belong to?")
 			_, _ = fmt.Scanln(&catName)
 			fmt.Println("How many units are there?")
