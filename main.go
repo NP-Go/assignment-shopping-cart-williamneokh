@@ -218,8 +218,24 @@ func main() {
 
 			pressToContinue()
 		case 5:
+			var userInput string
+			var isFound = false
 			//deleteItem
+			fmt.Println("Delete Item")
+			fmt.Println("Enter item name to delete:")
+			_, _ = fmt.Scanln(&userInput)
 
+			for key := range nameMap {
+				if userInput == key {
+					isFound = true
+				}
+			}
+			if isFound == true {
+				delete(nameMap, userInput)
+				fmt.Println("Deleted", userInput)
+			} else {
+				fmt.Println("Item not found. Nothing to delete!")
+			}
 			pressToContinue()
 		case 6:
 			for key, element := range nameMap {
