@@ -129,6 +129,10 @@ func main() {
 			var newCategory string
 			var newQuantity int
 			var newCost float64
+			var isChangeName = false
+			var isChangeCategory = false
+			var isChangeQuantity = false
+			var catNum int
 			fmt.Println("Modify Item")
 			fmt.Println("Which item would you wish to modify?")
 			_, _ = fmt.Scanln(&userInput)
@@ -145,27 +149,77 @@ func main() {
 					_, _ = fmt.Scanln(&newQuantity)
 					fmt.Println("Enter new Unit cost. Enter for no change")
 					_, _ = fmt.Scanln(&newCost)
+					if newName == "" {
+						fmt.Println("No change to item name made")
+					} else {
+						nameMap[newName] = nameMap[key]
+						delete(nameMap, key)
+						isChangeName = true
+					}
+					if newCategory == "" {
+						fmt.Println("No change to category made")
+					} else {
+
+						//key, category[element.catType], element.quantity, element.cost
+						//nameMap["Sprite"] = itemInformation{2, 5, 2}
+						for i, value := range category {
+							if newCategory == value {
+								catNum = i
+							}
+						}
+						if isChangeName == true {
+							nameMap[newName] = itemInformation{catNum, element.quantity, element.cost}
+							isChangeCategory = true
+						} else {
+							nameMap[key] = itemInformation{catNum, element.quantity, element.cost}
+							isChangeCategory = true
+						}
+					}
+					if newQuantity == 0 {
+						fmt.Println("No change to quantity made")
+					} else {
+						if isChangeName == true && isChangeCategory == false {
+							nameMap[newName] = itemInformation{element.catType, newQuantity, element.cost}
+							isChangeQuantity = true
+						} else if isChangeName == false && isChangeCategory == true {
+							nameMap[key] = itemInformation{catNum, newQuantity, element.cost}
+							isChangeQuantity = true
+						} else if isChangeName == true && isChangeCategory == true {
+							nameMap[newName] = itemInformation{catNum, newQuantity, element.cost}
+							isChangeQuantity = true
+						} else {
+							nameMap[key] = itemInformation{element.catType, newQuantity, element.cost}
+							isChangeQuantity = true
+						}
+					}
+					if newCost == 0.0 {
+						fmt.Println("No change to unit cost made")
+					} else {
+						if isChangeName == true && isChangeCategory == false && isChangeQuantity == false {
+							nameMap[newName] = itemInformation{element.catType, element.quantity, newCost}
+						} else if isChangeName == true && isChangeCategory == true && isChangeQuantity == false {
+							nameMap[newName] = itemInformation{catNum, element.quantity, newCost}
+						} else if isChangeName == true && isChangeCategory == true && isChangeQuantity == true {
+							nameMap[newName] = itemInformation{catNum, newQuantity, newCost}
+						} else if isChangeName == false && isChangeCategory == true && isChangeQuantity == true {
+							nameMap[key] = itemInformation{catNum, newQuantity, newCost}
+						} else if isChangeName == false && isChangeCategory == false && isChangeQuantity == true {
+							nameMap[key] = itemInformation{element.catType, newQuantity, newCost}
+						} else if isChangeName == false && isChangeCategory == true && isChangeQuantity == false {
+							nameMap[key] = itemInformation{catNum, element.quantity, newCost}
+						} else if isChangeName == true && isChangeCategory == false && isChangeQuantity == true {
+							nameMap[newName] = itemInformation{element.catType, newQuantity, newCost}
+						} else {
+							nameMap[key] = itemInformation{element.catType, element.quantity, newCost}
+						}
+					}
 				}
 			}
-			if newName == "" {
-				fmt.Println("No change to item name made")
-			} else {
-			}
-			if newCategory == "" {
-				fmt.Println("No change to category made")
-			} else {
-			}
-			if newQuantity == 0 {
-				fmt.Println("No change to quantity made")
-			} else {
-			}
-			if newCost == 0.0 {
-				fmt.Println("No change to unit cost made")
-			} else {
-			}
+
 			pressToContinue()
 		case 5:
-			//deleteItem()
+			//deleteItem
+
 			pressToContinue()
 		case 6:
 			for key, element := range nameMap {
