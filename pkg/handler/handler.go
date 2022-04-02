@@ -1,6 +1,7 @@
-package main
+package handler
 
 import (
+	"assignment-shopping-cart-williamneokh/pkg/config"
 	"fmt"
 )
 
@@ -8,8 +9,8 @@ import (
 func ViewShopList() {
 	fmt.Println("Shopping List Contents:")
 	PrintBreak()
-	for key, element := range nameMap {
-		fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", category[element.catType], key, element.quantity, element.cost)
+	for key, element := range config.NameMap {
+		fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", config.Category[element.CatType], key, element.Quantity, element.Cost)
 
 	}
 	PressToContinue()
@@ -33,10 +34,10 @@ func GenerateShoppingListReport() {
 		num := make(map[string]float64)
 		fmt.Println("Total cost by category")
 		PrintBreak()
-		for i, catName := range category {
-			for _, element := range nameMap {
-				if i == element.catType {
-					sum := float64(element.quantity) * element.cost
+		for i, catName := range config.Category {
+			for _, element := range config.NameMap {
+				if i == element.CatType {
+					sum := float64(element.Quantity) * element.Cost
 					num[catName] = num[catName] + sum
 				}
 			}
@@ -48,11 +49,11 @@ func GenerateShoppingListReport() {
 	case 2:
 		fmt.Println("List by category")
 		PrintBreak()
-		for i, cat := range category {
-			for key, element := range nameMap {
-				if i == element.catType {
+		for i, cat := range config.Category {
+			for key, element := range config.NameMap {
+				if i == element.CatType {
 
-					fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", cat, key, element.quantity, element.cost)
+					fmt.Printf("Category: %v - Item: %v Quantity: %v Unit Cost: %v\n", cat, key, element.Quantity, element.Cost)
 				}
 
 			}
@@ -80,9 +81,9 @@ func AddItem() {
 	fmt.Println("How much does it cost per unit?")
 	_, _ = fmt.Scanln(&itemCost)
 
-	for i, cat := range category {
+	for i, cat := range config.Category {
 		if catName == cat {
-			nameMap[itemName] = itemInformation{i, quantityNum, itemCost}
+			config.NameMap[itemName] = config.ItemInformation{i, quantityNum, itemCost}
 			matchAny = true
 		}
 
@@ -109,20 +110,43 @@ func ModifyItems() {
 	var isChangeName = false
 	var isChangeCategory = false
 	var isChangeQuantity = false
+	var foundItemName = false
+	var foundCategory = false
 	var catNum int
 	fmt.Println("Modify Item")
 	PrintBreak()
 	fmt.Println("Which item would you wish to modify?")
 	_, _ = fmt.Scanln(&userInput)
-	// search map base on userInput as key
+	//check userInput is valid
+	for itemName, _ := range config.NameMap {
+		if itemName == userInput {
+			foundItemName = true
+		}
+	}
+	if foundItemName == false {
+		fmt.Println("Item not found!")
+	}
 
-	for key, element := range nameMap {
+	for key, element := range config.NameMap {
 		if userInput == key {
-			fmt.Printf("Current item name is %v - Category is %v - Quantity is %v - Unit Cost %v\n", key, category[element.catType], element.quantity, element.cost)
+			fmt.Printf("Current item name is %v - Category is %v - Quantity is %v - Unit Cost %v\n", key, config.Category[element.CatType], element.Quantity, element.Cost)
 			fmt.Println("Enter new name. Enter for no change")
 			_, _ = fmt.Scanln(&newName)
 			fmt.Println("Enter new Category. Enter for no change")
 			_, _ = fmt.Scanln(&newCategory)
+			//check if newCategory is valid
+			if newCategory != "" {
+				for _, catName := range config.Category {
+					if catName == newCategory {
+						foundCategory = true
+					}
+				}
+				if foundCategory == false {
+					fmt.Println("Category not found!")
+					break
+				}
+			}
+
 			fmt.Println("Enter new Quantity. Enter for no change")
 			_, _ = fmt.Scanln(&newQuantity)
 			fmt.Println("Enter new Unit cost. Enter for no change")
@@ -130,26 +154,24 @@ func ModifyItems() {
 			if newName == "" {
 				fmt.Println("No change to item name made")
 			} else {
-				nameMap[newName] = nameMap[key]
-				delete(nameMap, key)
+				config.NameMap[newName] = config.NameMap[key]
+				delete(config.NameMap, key)
 				isChangeName = true
 			}
 			if newCategory == "" {
 				fmt.Println("No change to category made")
 			} else {
 
-				//key, category[element.catType], element.quantity, element.cost
-				//nameMap["Sprite"] = itemInformation{2, 5, 2}
-				for i, value := range category {
+				for i, value := range config.Category {
 					if newCategory == value {
 						catNum = i
 					}
 				}
 				if isChangeName == true {
-					nameMap[newName] = itemInformation{catNum, element.quantity, element.cost}
+					config.NameMap[newName] = config.ItemInformation{catNum, element.Quantity, element.Cost}
 					isChangeCategory = true
 				} else {
-					nameMap[key] = itemInformation{catNum, element.quantity, element.cost}
+					config.NameMap[key] = config.ItemInformation{catNum, element.Quantity, element.Cost}
 					isChangeCategory = true
 				}
 			}
@@ -157,16 +179,16 @@ func ModifyItems() {
 				fmt.Println("No change to quantity made")
 			} else {
 				if isChangeName == true && isChangeCategory == false {
-					nameMap[newName] = itemInformation{element.catType, newQuantity, element.cost}
+					config.NameMap[newName] = config.ItemInformation{element.CatType, newQuantity, element.Cost}
 					isChangeQuantity = true
 				} else if isChangeName == false && isChangeCategory == true {
-					nameMap[key] = itemInformation{catNum, newQuantity, element.cost}
+					config.NameMap[key] = config.ItemInformation{catNum, newQuantity, element.Cost}
 					isChangeQuantity = true
 				} else if isChangeName == true && isChangeCategory == true {
-					nameMap[newName] = itemInformation{catNum, newQuantity, element.cost}
+					config.NameMap[newName] = config.ItemInformation{catNum, newQuantity, element.Cost}
 					isChangeQuantity = true
 				} else {
-					nameMap[key] = itemInformation{element.catType, newQuantity, element.cost}
+					config.NameMap[key] = config.ItemInformation{element.CatType, newQuantity, element.Cost}
 					isChangeQuantity = true
 				}
 			}
@@ -174,21 +196,21 @@ func ModifyItems() {
 				fmt.Println("No change to unit cost made")
 			} else {
 				if isChangeName == true && isChangeCategory == false && isChangeQuantity == false {
-					nameMap[newName] = itemInformation{element.catType, element.quantity, newCost}
+					config.NameMap[newName] = config.ItemInformation{element.CatType, element.Quantity, newCost}
 				} else if isChangeName == true && isChangeCategory == true && isChangeQuantity == false {
-					nameMap[newName] = itemInformation{catNum, element.quantity, newCost}
+					config.NameMap[newName] = config.ItemInformation{catNum, element.Quantity, newCost}
 				} else if isChangeName == true && isChangeCategory == true && isChangeQuantity == true {
-					nameMap[newName] = itemInformation{catNum, newQuantity, newCost}
+					config.NameMap[newName] = config.ItemInformation{catNum, newQuantity, newCost}
 				} else if isChangeName == false && isChangeCategory == true && isChangeQuantity == true {
-					nameMap[key] = itemInformation{catNum, newQuantity, newCost}
+					config.NameMap[key] = config.ItemInformation{catNum, newQuantity, newCost}
 				} else if isChangeName == false && isChangeCategory == false && isChangeQuantity == true {
-					nameMap[key] = itemInformation{element.catType, newQuantity, newCost}
+					config.NameMap[key] = config.ItemInformation{element.CatType, newQuantity, newCost}
 				} else if isChangeName == false && isChangeCategory == true && isChangeQuantity == false {
-					nameMap[key] = itemInformation{catNum, element.quantity, newCost}
+					config.NameMap[key] = config.ItemInformation{catNum, element.Quantity, newCost}
 				} else if isChangeName == true && isChangeCategory == false && isChangeQuantity == true {
-					nameMap[newName] = itemInformation{element.catType, newQuantity, newCost}
+					config.NameMap[newName] = config.ItemInformation{element.CatType, newQuantity, newCost}
 				} else {
-					nameMap[key] = itemInformation{element.catType, element.quantity, newCost}
+					config.NameMap[key] = config.ItemInformation{element.CatType, element.Quantity, newCost}
 				}
 			}
 		}
@@ -207,13 +229,13 @@ func DeleteItem() {
 	fmt.Println("Enter item name to delete:")
 	_, _ = fmt.Scanln(&userInput)
 
-	for key := range nameMap {
+	for key := range config.NameMap {
 		if userInput == key {
 			isFound = true
 		}
 	}
 	if isFound == true {
-		delete(nameMap, userInput)
+		delete(config.NameMap, userInput)
 		fmt.Println("Deleted", userInput)
 	} else {
 		fmt.Println("Item not found. Nothing to delete!")
@@ -225,7 +247,7 @@ func DeleteItem() {
 func PrintData() {
 	fmt.Println("Print Current Data")
 	PrintBreak()
-	for key, element := range nameMap {
+	for key, element := range config.NameMap {
 		fmt.Println(key, element)
 	}
 	PressToContinue()
@@ -244,18 +266,18 @@ func AddNewCategoryName() {
 		fmt.Println("No Input Found!")
 		PressToContinue()
 	} else {
-		for _, element := range nameMap {
-			if userInput == category[element.catType] {
+		for _, element := range config.NameMap {
+			if userInput == config.Category[element.CatType] {
 				matchAny = true
-				indexPlace = element.catType
+				indexPlace = element.CatType
 			}
 		}
 		if matchAny == true {
 			fmt.Printf("Category: %v already exit at index %v !\n", userInput, indexPlace)
 			PressToContinue()
 		} else {
-			category = append(category, userInput)
-			fmt.Printf("New category: %v added at index %v\n", userInput, len(category)-1)
+			config.Category = append(config.Category, userInput)
+			fmt.Printf("New category: %v added at index %v\n", userInput, len(config.Category)-1)
 			PressToContinue()
 		}
 	}

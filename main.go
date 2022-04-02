@@ -1,24 +1,19 @@
 package main
 
 import (
+	"assignment-shopping-cart-williamneokh/pkg/config"
+	"assignment-shopping-cart-williamneokh/pkg/data"
+	"assignment-shopping-cart-williamneokh/pkg/handler"
 	"fmt"
 )
 
-type itemInformation struct {
-	catType  int
-	quantity int
-	cost     float64
-}
-
-var category []string
-var nameMap map[string]itemInformation
-
 func main() {
-	PreLoadData()
+	config.LoadMap()
+	data.PreLoadData() //Pre-load datasheet or comment out to remove datasheet
 	for {
 		var choice int
 		fmt.Println("Shopping List Application")
-		PrintBreak()
+		handler.PrintBreak()
 		fmt.Println("1. View Entire Shopping list")
 		fmt.Println("2. Generate Shopping List Report")
 		fmt.Println("3. Add Items")
@@ -31,19 +26,19 @@ func main() {
 
 		switch choice {
 		case 1:
-			ViewShopList()
+			handler.ViewShopList()
 		case 2:
-			GenerateShoppingListReport()
+			handler.GenerateShoppingListReport()
 		case 3:
-			AddItem()
+			handler.AddItem()
 		case 4:
-			ModifyItems()
+			handler.ModifyItems()
 		case 5:
-			DeleteItem()
+			handler.DeleteItem()
 		case 6:
-			PrintData()
+			handler.PrintData()
 		case 7:
-			AddNewCategoryName()
+			handler.AddNewCategoryName()
 
 		}
 	}
