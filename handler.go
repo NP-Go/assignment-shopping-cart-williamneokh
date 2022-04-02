@@ -242,21 +242,21 @@ func AddNewCategoryName() {
 
 	if userInput == "" {
 		fmt.Println("No Input Found!")
-
-	}
-	for _, element := range nameMap {
-		if userInput == category[element.catType] {
-			matchAny = true
-			indexPlace = element.catType
-		}
-	}
-	if matchAny == true {
-		fmt.Printf("Category: %v already exit at index %v !\n", userInput, indexPlace)
 		PressToContinue()
 	} else {
-
-		category = append(category, userInput)
-		fmt.Printf("New category: %v added at index %v\n", userInput, len(category)-1)
-		PressToContinue()
+		for _, element := range nameMap {
+			if userInput == category[element.catType] {
+				matchAny = true
+				indexPlace = element.catType
+			}
+		}
+		if matchAny == true {
+			fmt.Printf("Category: %v already exit at index %v !\n", userInput, indexPlace)
+			PressToContinue()
+		} else {
+			category = append(category, userInput)
+			fmt.Printf("New category: %v added at index %v\n", userInput, len(category)-1)
+			PressToContinue()
+		}
 	}
 }
