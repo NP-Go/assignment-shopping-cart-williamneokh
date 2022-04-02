@@ -118,7 +118,7 @@ func ModifyItems() {
 	fmt.Println("Which item would you wish to modify?")
 	_, _ = fmt.Scanln(&userInput)
 	//check userInput is valid
-	for itemName, _ := range config.NameMap {
+	for itemName := range config.NameMap {
 		if itemName == userInput {
 			foundItemName = true
 		}
