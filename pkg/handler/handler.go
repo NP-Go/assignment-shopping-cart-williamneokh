@@ -243,7 +243,7 @@ func DeleteItem() {
 	PressToContinue()
 }
 
-//PrintData perform option 5: Print Current Data
+//PrintData perform option 6: Print Current Data
 func PrintData() {
 	fmt.Println("Print Current Data")
 	PrintBreak()
@@ -253,6 +253,7 @@ func PrintData() {
 	PressToContinue()
 }
 
+//AddNewCategoryName perform option 7: Add New Category Name
 func AddNewCategoryName() {
 	var matchAny = false
 	var userInput string
