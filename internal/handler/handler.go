@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"assignment-shopping-cart-williamneokh/pkg/config"
+	"assignment-shopping-cart-williamneokh/internal/config"
 	"fmt"
 )
 

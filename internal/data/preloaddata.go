@@ -1,6 +1,6 @@
 package data
 
-import "assignment-shopping-cart-williamneokh/pkg/config"
+import "assignment-shopping-cart-williamneokh/internal/config"
 
 func PreLoadData() {
 

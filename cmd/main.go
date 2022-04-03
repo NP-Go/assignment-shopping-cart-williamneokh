@@ -1,9 +1,9 @@
 package main
 
 import (
-	"assignment-shopping-cart-williamneokh/pkg/config"
-	"assignment-shopping-cart-williamneokh/pkg/data"
-	"assignment-shopping-cart-williamneokh/pkg/handler"
+	"assignment-shopping-cart-williamneokh/internal/config"
+	"assignment-shopping-cart-williamneokh/internal/data"
+	"assignment-shopping-cart-williamneokh/internal/handler"
 	"fmt"
 )
 
